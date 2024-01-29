@@ -28,7 +28,7 @@ pub fn run(config: config::Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub fn build(args: &Vec<String>) -> Result<config::Config, &'static str> {
+pub fn build(args: impl Iterator<Item = String>) -> Result<config::Config, &'static str> {
     config::Config::build(args)
 }
 

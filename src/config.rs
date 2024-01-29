@@ -5,15 +5,28 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build(args: &Vec<String>) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("Not enough parameters to perform a search");
-        }
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+
+        let ignore_case = match args.next() {
+            Some(arg) => arg == String::from("--ignore-case"),
+            None => false,
+        };
 
         Ok(Config {
-            query: args[1].clone(),
-            file_path: args[2].clone(),
-            ignore_case: args.contains(&String::from("--ignore-case")),
+            query,
+            file_path,
+            ignore_case,
         })
     }
 }
